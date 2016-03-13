@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import ydrasaal.alligregator.FeedListActivity;
 import ydrasaal.alligregator.R;
 import ydrasaal.alligregator.data.MenuItem;
 

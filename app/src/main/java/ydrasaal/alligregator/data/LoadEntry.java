@@ -7,11 +7,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Feed {
+public class LoadEntry {
 
-    @SerializedName("feedUrl")
-    @Expose
-    private String feedUrl;
     @SerializedName("title")
     @Expose
     private String title;
@@ -21,33 +18,18 @@ public class Feed {
     @SerializedName("author")
     @Expose
     private String author;
-    @SerializedName("description")
+    @SerializedName("publishedDate")
     @Expose
-    private String description;
-    @SerializedName("type")
+    private String publishedDate;
+    @SerializedName("contentSnippet")
     @Expose
-    private String type;
-    @SerializedName("entries")
+    private String contentSnippet;
+    @SerializedName("content")
     @Expose
-    private List<LoadEntry> entries = new ArrayList<LoadEntry>();
-
-    /**
-     * 
-     * @return
-     *     The feedUrl
-     */
-    public String getFeedUrl() {
-        return feedUrl;
-    }
-
-    /**
-     * 
-     * @param feedUrl
-     *     The feedUrl
-     */
-    public void setFeedUrl(String feedUrl) {
-        this.feedUrl = feedUrl;
-    }
+    private String content;
+    @SerializedName("categories")
+    @Expose
+    private List<Object> categories = new ArrayList<Object>();
 
     /**
      * 
@@ -106,55 +88,73 @@ public class Feed {
     /**
      * 
      * @return
-     *     The description
+     *     The publishedDate
      */
-    public String getDescription() {
-        return description;
+    public String getPublishedDate() {
+        return publishedDate;
     }
 
     /**
      * 
-     * @param description
-     *     The description
+     * @param publishedDate
+     *     The publishedDate
      */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * 
-     * @return
-     *     The type
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * 
-     * @param type
-     *     The type
-     */
-    public void setType(String type) {
-        this.type = type;
+    public void setPublishedDate(String publishedDate) {
+        this.publishedDate = publishedDate;
     }
 
     /**
      * 
      * @return
-     *     The entries
+     *     The contentSnippet
      */
-    public List<LoadEntry> getEntries() {
-        return entries;
+    public String getContentSnippet() {
+        return contentSnippet;
     }
 
     /**
      * 
-     * @param entries
-     *     The entries
+     * @param contentSnippet
+     *     The contentSnippet
      */
-    public void setEntries(List<LoadEntry> entries) {
-        this.entries = entries;
+    public void setContentSnippet(String contentSnippet) {
+        this.contentSnippet = contentSnippet;
+    }
+
+    /**
+     * 
+     * @return
+     *     The content
+     */
+    public String getContent() {
+        return content;
+    }
+
+    /**
+     * 
+     * @param content
+     *     The content
+     */
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    /**
+     * 
+     * @return
+     *     The categories
+     */
+    public List<Object> getCategories() {
+        return categories;
+    }
+
+    /**
+     * 
+     * @param categories
+     *     The categories
+     */
+    public void setCategories(List<Object> categories) {
+        this.categories = categories;
     }
 
 }

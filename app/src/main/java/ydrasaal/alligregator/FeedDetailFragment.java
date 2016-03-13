@@ -1,18 +1,22 @@
 package ydrasaal.alligregator;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import ydrasaal.alligregator.activities.FeedDetailActivity;
 import ydrasaal.alligregator.dummy.DummyContent;
 
 /**
- * A fragment representing a single Feed detail screen.
+ * A fragment representing a single LoadEntry detail screen.
  * This fragment is either contained in a {@link FeedListActivity}
  * in two-pane mode (on tablets) or a {@link FeedDetailActivity}
  * on handsets.
@@ -22,12 +26,12 @@ public class FeedDetailFragment extends Fragment {
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
-    public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_SNIPPET = "argsnip";
+    public static final String ARG_URL = "argurl";
+    public static final String ARG_TITLE = "argtitle";
 
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    private DummyContent.DummyItem mItem;
+
+    Bundle bundle;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -40,17 +44,13 @@ public class FeedDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+        bundle = getArguments();
+        if (bundle == null || !bundle.containsKey(ARG_TITLE)) return;
 
-            Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.content);
-            }
+        Activity activity = this.getActivity();
+        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+        if (appBarLayout != null) {
+            appBarLayout.setTitle(bundle.getString(ARG_TITLE));
         }
     }
 
@@ -59,10 +59,14 @@ public class FeedDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.feed_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.feed_detail)).setText(mItem.details);
-        }
+        ((TextView) rootView.findViewById(R.id.feed_detail)).setText(bundle.getString(ARG_SNIPPET));
+        rootView.findViewById(R.id.detail_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bundle.getString(ARG_URL)));
+                startActivity(browserIntent);
+            }
+        });
 
         return rootView;
     }

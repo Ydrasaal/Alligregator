@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by Léo on 12/03/2016.
+ * Created by Léo on 13/03/2016.
  */
-public class Item {
+public class Query {
 
     @SerializedName("entries")
     private List<LoadEntry> entries;

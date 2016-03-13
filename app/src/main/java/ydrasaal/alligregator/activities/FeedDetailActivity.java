@@ -1,4 +1,4 @@
-package ydrasaal.alligregator;
+package ydrasaal.alligregator.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import ydrasaal.alligregator.FeedDetailFragment;
+import ydrasaal.alligregator.R;
+import ydrasaal.alligregator.activities.LobbyActivity;
+
 /**
- * An activity representing a single Feed detail screen. This
+ * An activity representing a single LoadEntry detail screen. This
  * activity is only used narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
  * in a {@link FeedListActivity}.
@@ -53,8 +57,8 @@ public class FeedDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(FeedDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(FeedDetailFragment.ARG_ITEM_ID));
+//            arguments.putString(FeedDetailFragment.ARG_ITEM_ID,
+//                    getIntent().getStringExtra(FeedDetailFragment.ARG_ITEM_ID));
             FeedDetailFragment fragment = new FeedDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -73,7 +77,7 @@ public class FeedDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, FeedListActivity.class));
+            navigateUpTo(new Intent(this, LobbyActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

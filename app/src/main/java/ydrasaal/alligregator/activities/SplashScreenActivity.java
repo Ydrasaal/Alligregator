@@ -1,22 +1,11 @@
 package ydrasaal.alligregator.activities;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import ydrasaal.alligregator.FeedListActivity;
 import ydrasaal.alligregator.R;
 
 /**
@@ -55,7 +44,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void switchToLobby() {
-        startActivity(new Intent(this, FeedListActivity.class));
+        startActivity(new Intent(this, LobbyActivity.class));
         finish();
     }
 }
