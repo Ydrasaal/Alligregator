@@ -200,7 +200,6 @@ public class LobbyActivity extends AToolbarCompatActivity implements NavigationD
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 startActivity(new Intent(LobbyActivity.this, SearchFeedActivity.class));
             }
         });
@@ -289,19 +288,22 @@ public class LobbyActivity extends AToolbarCompatActivity implements NavigationD
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Bundle arguments = new Bundle();
+                    arguments.putString(FeedDetailFragment.ARG_URL, holder.mItem.getLink());
+                    arguments.putString(FeedDetailFragment.ARG_SNIPPET, holder.mItem.getContentSnippet());
+                    arguments.putString(FeedDetailFragment.ARG_TITLE, holder.mItem.getTitle());
                     if (mTwoPane) {
-                        Bundle arguments = new Bundle();
-                        arguments.putString(FeedDetailFragment.ARG_URL, holder.mItem.getLink());
-                        arguments.putString(FeedDetailFragment.ARG_SNIPPET, holder.mItem.getContentSnippet());
-                        arguments.putString(FeedDetailFragment.ARG_TITLE, holder.mItem.getTitle());
                         FeedDetailFragment fragment = new FeedDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.feed_detail_container, fragment)
                                 .commit();
                     } else {
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(holder.mItem.getLink()));
-                        startActivity(browserIntent);
+                        Intent intent = new Intent(LobbyActivity.this, FeedDetailActivity.class);
+                        intent.putExtras(arguments);
+                        startActivity(intent);
+//                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(holder.mItem.getLink()));
+//                        startActivity(browserIntent);
                     }
                 }
             });

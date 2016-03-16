@@ -5,8 +5,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
+import java.util.Set;
 
 import ydrasaal.alligregator.R;
+import ydrasaal.alligregator.utils.SharedPrefUtils;
 
 /**
  * Created by Léo on 12/03/2016.
@@ -20,6 +24,20 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        Set<String> set = SharedPrefUtils.getString(this);
+        if (set == null) {
+            Log.d("SHARED_PREF", "Null preferences ...");
+        } else if (set.isEmpty()){
+            Log.d("SHARED_PREF", "Empty preferences ...");
+        } else {
+            Log.d("SHARED_PREF", "Got " + set.size() + " saved url(s)");
+            int i = 1;
+            for (String s :
+                    set) {
+                Log.d("SHARED_PREF", i++ + ": " + s);
+            }
+        }
 
         setSplashScreenCountDown();
     }

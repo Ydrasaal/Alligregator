@@ -15,6 +15,14 @@
         tools:context="ydrasaal.alligregator.FeedDetailFragment"
         android:layout_marginBottom="20dp"/>
 
+    <WebView
+        android:id="@+id/feed_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </WebView>
+
     <Button
         android:id="@+id/detail_button"
         android:layout_width="wrap_content"
