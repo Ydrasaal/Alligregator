@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class LoadEntry {
@@ -20,7 +21,7 @@ public class LoadEntry {
     private String author;
     @SerializedName("publishedDate")
     @Expose
-    private String publishedDate;
+    private Date publishedDate;
     @SerializedName("contentSnippet")
     @Expose
     private String contentSnippet;
@@ -85,21 +86,30 @@ public class LoadEntry {
         this.author = author;
     }
 
-    /**
-     * 
-     * @return
-     *     The publishedDate
-     */
-    public String getPublishedDate() {
+//    /**
+//     *
+//     * @return
+//     *     The publishedDate
+//     */
+//    public String getPublishedDate() {
+//        return publishedDate;
+//    }
+//
+//    /**
+//     *
+//     * @param publishedDate
+//     *     The publishedDate
+//     */
+//    public void setPublishedDate(String publishedDate) {
+//        this.publishedDate = publishedDate;
+//    }
+
+
+    public Date getPublishedDate() {
         return publishedDate;
     }
 
-    /**
-     * 
-     * @param publishedDate
-     *     The publishedDate
-     */
-    public void setPublishedDate(String publishedDate) {
+    public void setPublishedDate(Date publishedDate) {
         this.publishedDate = publishedDate;
     }
 

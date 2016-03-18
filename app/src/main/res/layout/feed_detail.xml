@@ -12,16 +12,8 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textIsSelectable="true"
-        tools:context="ydrasaal.alligregator.FeedDetailFragment"
+        tools:context=".EntryDetailFragment"
         android:layout_marginBottom="20dp"/>
-
-    <WebView
-        android:id="@+id/feed_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-    </WebView>
 
     <Button
         android:id="@+id/detail_button"

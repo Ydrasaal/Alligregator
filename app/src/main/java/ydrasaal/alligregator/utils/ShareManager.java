@@ -3,7 +3,7 @@ package ydrasaal.alligregator.utils;
 import android.content.Intent;
 import android.os.Bundle;
 
-import ydrasaal.alligregator.FeedDetailFragment;
+import ydrasaal.alligregator.EntryDetailFragment;
 
 /**
  * Created by Léo on 16/03/2016.
@@ -25,12 +25,12 @@ public class ShareManager {
         String preview = "";
 
         if (arguments != null) {
-            if (arguments.get(FeedDetailFragment.ARG_TITLE) != null)
-                preview += arguments.getString(FeedDetailFragment.ARG_TITLE) + "\n\n";
-            if (arguments.get(FeedDetailFragment.ARG_SNIPPET) != null)
-                preview += arguments.getString(FeedDetailFragment.ARG_SNIPPET) + "\n\n";
-            if (arguments.get(FeedDetailFragment.ARG_URL) != null)
-                preview += arguments.getString(FeedDetailFragment.ARG_URL);
+            if (arguments.get(EntryDetailFragment.ARG_TITLE) != null)
+                preview += arguments.getString(EntryDetailFragment.ARG_TITLE) + "\n\n";
+            if (arguments.get(EntryDetailFragment.ARG_SNIPPET) != null)
+                preview += arguments.getString(EntryDetailFragment.ARG_SNIPPET) + "\n\n";
+            if (arguments.get(EntryDetailFragment.ARG_URL) != null)
+                preview += arguments.getString(EntryDetailFragment.ARG_URL);
         }
 
         return preview;

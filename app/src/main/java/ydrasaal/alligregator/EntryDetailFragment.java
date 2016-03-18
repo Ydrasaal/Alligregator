@@ -1,32 +1,27 @@
 package ydrasaal.alligregator;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.TextView;
 
-import ydrasaal.alligregator.activities.FeedDetailActivity;
-import ydrasaal.alligregator.dummy.DummyContent;
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
+
+import ydrasaal.alligregator.activities.EntryDetailActivity;
+import ydrasaal.alligregator.utils.ChromeUtils;
 
 /**
  * A fragment representing a single LoadEntry detail screen.
  * This fragment is either contained in a {@link FeedListActivity}
- * in two-pane mode (on tablets) or a {@link FeedDetailActivity}
+ * in two-pane mode (on tablets) or a {@link EntryDetailActivity}
  * on handsets.
  */
-public class FeedDetailFragment extends Fragment {
+public class EntryDetailFragment extends Fragment {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -43,7 +38,7 @@ public class FeedDetailFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public FeedDetailFragment() {
+    public EntryDetailFragment() {
     }
 
     @Override
@@ -73,26 +68,12 @@ public class FeedDetailFragment extends Fragment {
 
         ((TextView) rootView.findViewById(R.id.feed_detail)).setText(bundle.getString(ARG_SNIPPET));
 
-        WebView feedView = (WebView) rootView.findViewById(R.id.feed_content);
 
-        WebSettings ws = feedView.getSettings();
-//        ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-
-        ws.setUseWideViewPort(true);
-        ws.setLoadWithOverviewMode(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            ws.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-        }
-
-        feedView.loadUrl(contentURL);
-//        feedView.loadData(contentURL, "text/html; charset=utf-8","utf-8");
-//        feedView.loadDataWithBaseURL("http://www.androidcentral.com/", contentURL, "text/html", "UTF-8", null);
 
         rootView.findViewById(R.id.detail_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bundle.getString(ARG_URL)));
-                startActivity(browserIntent);
+                ChromeUtils.openUrlInCustomTab(getActivity(), Uri.parse(contentURL));
             }
         });
 

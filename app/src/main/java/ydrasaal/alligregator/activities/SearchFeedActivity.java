@@ -21,7 +21,6 @@ import retrofit.Call;
 import retrofit.Response;
 import ydrasaal.alligregator.R;
 import ydrasaal.alligregator.data.FindEntry;
-import ydrasaal.alligregator.data.LoadEntry;
 import ydrasaal.alligregator.data.FindResults;
 import ydrasaal.alligregator.network.AlligregatorAPI;
 import ydrasaal.alligregator.network.listeners.APICallbackListener;
@@ -176,7 +175,7 @@ public class SearchFeedActivity extends AToolbarCompatActivity {
                 @Override
                 public void onClick(View v) {
                     //TODO LOGIC
-                    SharedPrefUtils.saveString(holder.mItem.getUrl(), SearchFeedActivity.this);
+                    SharedPrefUtils.saveURL(SearchFeedActivity.this, holder.mItem.getUrl());
                     Log.d("LOG", "Added " + holder.mItem.getUrl());
                 }
             });

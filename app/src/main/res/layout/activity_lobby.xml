@@ -40,7 +40,7 @@
         android:layout_gravity="left|start"
         android:choiceMode="singleChoice"
         android:divider="@null"
-        android:background="@color/colorAccent"
+        android:background="@android:color/black"
         />
 
 </android.support.v4.widget.DrawerLayout>

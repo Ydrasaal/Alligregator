@@ -3,4 +3,11 @@
     <string name="title_feed_detail">Feed Detail</string>
 
     <string name="title_search_feed">Search</string>
+
+    <string name="settings_toolbar">Settings</string>
+    <string name="settings_number">Entry loaded for each feed : %d</string>
+
+    <string name="about_title">About</string>
+    <string name="about_version" translatable="false">Alligregator v%s</string>
+    <string name="about_build" translatable="false">build %s</string>
 </resources>

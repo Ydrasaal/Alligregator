@@ -2,6 +2,7 @@ package ydrasaal.alligregator.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.HashSet;
@@ -14,14 +15,16 @@ public class SharedPrefUtils {
 
     static final String SHARED_PREF_FILE = "spfile";
     static final String SHARED_PREF_URLS = "spurls";
+    static final String SHARED_PREF_SIZE_OPTION = "spsizeopt";
+
 
     /**
      * Add a new url to the favorites, creating the entry if it's the first
      *
-     * @param str
      * @param context
+     * @param str
      */
-    public static void saveString(String str, Context context) {
+    public static void saveURL(Context context, String str) {
         Log.d("SHARED_PREF", "Saving url " + str);
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE);
 
@@ -42,9 +45,23 @@ public class SharedPrefUtils {
         editor.apply();
     }
 
-    public static Set<String> getString(Context context) {
+    public static Set<String> getURLs(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE);
 
         return prefs.getStringSet(SHARED_PREF_URLS, null);
+    }
+
+    public static void saveOptions(Context context, int sizeValue) {
+        SharedPreferences prefs = context.getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putInt(SHARED_PREF_SIZE_OPTION, sizeValue);
+        editor.apply();
+    }
+
+    public static void getOptions(Context context, @NonNull OptionsManager.OptionData optionData) {
+        SharedPreferences prefs = context.getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE);
+
+        optionData.loadedEntryNumber = prefs.getInt(SHARED_PREF_SIZE_OPTION, 10);
     }
 }

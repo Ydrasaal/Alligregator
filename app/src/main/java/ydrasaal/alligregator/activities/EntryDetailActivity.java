@@ -3,16 +3,14 @@ package ydrasaal.alligregator.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import ydrasaal.alligregator.FeedDetailFragment;
+import ydrasaal.alligregator.EntryDetailFragment;
 import ydrasaal.alligregator.R;
-import ydrasaal.alligregator.activities.LobbyActivity;
 import ydrasaal.alligregator.utils.ShareManager;
 
 /**
@@ -21,7 +19,7 @@ import ydrasaal.alligregator.utils.ShareManager;
  * item details are presented side-by-side with a list of items
  * in a {@link FeedListActivity}.
  */
-public class FeedDetailActivity extends AppCompatActivity {
+public class EntryDetailActivity extends AppCompatActivity {
 
     private Bundle  arguments;
     private String  url;
@@ -63,7 +61,7 @@ public class FeedDetailActivity extends AppCompatActivity {
     }
 
     private void setupDetailFragment() {
-        FeedDetailFragment fragment = new FeedDetailFragment();
+        EntryDetailFragment fragment = new EntryDetailFragment();
         fragment.setArguments(arguments);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.feed_detail_container, fragment)
