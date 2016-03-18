@@ -9,16 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import ydrasaal.alligregator.EntryDetailFragment;
+import ydrasaal.alligregator.fragment_entry_detail.EntryDetailFragment;
 import ydrasaal.alligregator.R;
 import ydrasaal.alligregator.utils.ShareManager;
 
-/**
- * An activity representing a single LoadEntry detail screen. This
- * activity is only used narrow width devices. On tablet-size devices,
- * item details are presented side-by-side with a list of items
- * in a {@link FeedListActivity}.
- */
 public class EntryDetailActivity extends AppCompatActivity {
 
     private Bundle  arguments;
@@ -27,7 +21,7 @@ public class EntryDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feed_detail);
+        setContentView(R.layout.activity_entry_detail);
 
         arguments = getIntent().getExtras();
 

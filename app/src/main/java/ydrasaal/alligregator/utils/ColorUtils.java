@@ -1,6 +1,9 @@
 package ydrasaal.alligregator.utils;
 
 import android.animation.ArgbEvaluator;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.os.Build;
 
 /**
  * Created by Léo on 12/03/2016.
@@ -40,5 +43,12 @@ public class ColorUtils {
 
     public void setEndingColor(int endingColor) {
         this.endingColor = endingColor;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void setStatusBarColor(Activity activity, int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.getWindow().setStatusBarColor(color);
+        }
     }
 }

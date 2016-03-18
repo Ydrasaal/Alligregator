@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ydrasaal.alligregator.R;
+import ydrasaal.alligregator.data.EntryItem;
 import ydrasaal.alligregator.data.LoadEntry;
 import ydrasaal.alligregator.listeners.OnRecyclerItemClickListener;
 
@@ -20,16 +22,20 @@ import ydrasaal.alligregator.listeners.OnRecyclerItemClickListener;
 public class FeedListAdapter
         extends RecyclerView.Adapter<FeedListAdapter.ViewHolder> {
 
-    private final SortedList<LoadEntry>     values;
+    private String                          currentDisplay = "";
+    private List<EntryItem>                 hiddenValues;
+
+    private final SortedList<EntryItem>     values;
     private OnRecyclerItemClickListener     listener;
 
     public FeedListAdapter(OnRecyclerItemClickListener listener) {
         this.listener = listener;
+        hiddenValues = new ArrayList<>();
 
-        values = new SortedList<>(LoadEntry.class, new SortedList.Callback<LoadEntry>() {
+        values = new SortedList<>(EntryItem.class, new SortedList.Callback<EntryItem>() {
             @Override
-            public int compare(LoadEntry o1, LoadEntry o2) {
-                return o1.getTitle().compareTo(o2.getTitle());
+            public int compare(EntryItem o1, EntryItem o2) {
+                return o1.getEntry().getTitle().compareTo(o2.getEntry().getTitle());
             }
 
             @Override
@@ -53,13 +59,13 @@ public class FeedListAdapter
             }
 
             @Override
-            public boolean areContentsTheSame(LoadEntry oldItem, LoadEntry newItem) {
-                return oldItem.getLink().equals(newItem.getLink());
+            public boolean areContentsTheSame(EntryItem oldItem, EntryItem newItem) {
+                return oldItem.getEntry().getLink().equals(newItem.getEntry().getLink());
             }
 
             @Override
-            public boolean areItemsTheSame(LoadEntry item1, LoadEntry item2) {
-                return item1.getTitle().equals(item2.getTitle());
+            public boolean areItemsTheSame(EntryItem item1, EntryItem item2) {
+                return item1.getEntry().getTitle().equals(item2.getEntry().getTitle());
             }
         });
     }
@@ -73,8 +79,9 @@ public class FeedListAdapter
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mItem = values.get(position);
-        holder.title.setText(Html.fromHtml(values.get(position).getTitle()));
+        holder.mItem = values.get(position).getEntry();
+        holder.title.setText(Html.fromHtml(values.get(position).getEntry().getTitle()));
+        holder.feed.setText(Html.fromHtml(values.get(position).getFeedName()));
 
         if (listener != null) {
             holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -84,36 +91,16 @@ public class FeedListAdapter
                 }
             });
         }
-//        holder.mView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Bundle arguments = new Bundle();
-//                arguments.putString(EntryDetailFragment.ARG_URL, holder.mItem.getLink());
-//                arguments.putString(EntryDetailFragment.ARG_SNIPPET, holder.mItem.getContentSnippet());
-//                arguments.putString(EntryDetailFragment.ARG_TITLE, holder.mItem.getTitle());
-//                if (mTwoPane) {
-//                    EntryDetailFragment fragment = new EntryDetailFragment();
-//                    fragment.setArguments(arguments);
-//                    getSupportFragmentManager().beginTransaction()
-//                            .replace(R.id.feed_detail_container, fragment)
-//                            .commit();
-//                } else {
-//                    Intent intent = new Intent(LobbyActivity.this, EntryDetailActivity.class);
-//                    intent.putExtras(arguments);
-//                    startActivity(intent);
-////                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(holder.mItem.getLink()));
-////                        startActivity(browserIntent);
-//                }
-//            }
-//        });
     }
+
+
 
     @Override
     public int getItemCount() {
         return values.size();
     }
 
-    public void addItem(LoadEntry item) {
+    public void addItem(EntryItem item) {
         values.add(item);
         notifyItemInserted(values.size() - 1);
     }
@@ -123,19 +110,49 @@ public class FeedListAdapter
         notifyItemRemoved(position);
     }
 
-    public LoadEntry getItem(int position) {
+    public EntryItem getItem(int position) {
         return values.get(position);
+    }
+
+    public void removeAllByUrl(String url) {
+        restoreHiddenEntries();
+        if (url.equals(currentDisplay)) {
+            currentDisplay = "";
+            return;
+        }
+        values.beginBatchedUpdates();
+        for (int i = values.size() - 1; i >= 0; i--) {
+            if (!values.get(i).getFeedName().equals(url)) {
+                hiddenValues.add(values.removeItemAt(i));
+            }
+        }
+        values.endBatchedUpdates();
+        currentDisplay = url;
+        notifyDataSetChanged();
+    }
+
+    public void restoreHiddenEntries() {
+        values.beginBatchedUpdates();
+        for (EntryItem item :
+                hiddenValues) {
+            values.add(item);
+        }
+        hiddenValues.clear();
+        values.endBatchedUpdates();
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView title;
+        public final TextView feed;
         public LoadEntry mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            title = (TextView) view.findViewById(R.id.title);
+            title = (TextView) view.findViewById(R.id.entry_title);
+            feed = (TextView) view.findViewById(R.id.feed_title);
         }
     }
 }

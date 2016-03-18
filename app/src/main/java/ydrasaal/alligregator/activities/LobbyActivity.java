@@ -16,10 +16,11 @@ import android.view.View;
 import java.util.Set;
 
 import retrofit.Response;
-import ydrasaal.alligregator.EntryDetailFragment;
+import ydrasaal.alligregator.fragment_entry_detail.EntryDetailFragment;
 import ydrasaal.alligregator.R;
 import ydrasaal.alligregator.adapters.FeedListAdapter;
 import ydrasaal.alligregator.adapters.NavigationDrawerAdapter;
+import ydrasaal.alligregator.data.EntryItem;
 import ydrasaal.alligregator.data.Feed;
 import ydrasaal.alligregator.data.LoadEntry;
 import ydrasaal.alligregator.data.LoadResults;
@@ -46,7 +47,6 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
     private RecyclerView drawerRecyclerView;
     private DrawerLayout drawerLayout;
 
-//    private List<LoadEntry> results;
     private FeedListAdapter adapter;
 
     private NavigationDrawerAdapter menuAdapter;
@@ -66,7 +66,7 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
             mTwoPane = true;
         }
         setupRecyclerView();
-        setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        ColorUtils.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorPrimaryDark));
     }
 
     @Override
@@ -111,11 +111,11 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
 //                        results.clear();
                         for (LoadEntry entry :
                                 feed.getEntries()) {
-                            if (entry != null) adapter.addItem(entry);
+                            if (entry != null) adapter.addItem(new EntryItem(feed.getLink(), entry));
                             else {
                                 LoadEntry f = new LoadEntry();
                                 f.setTitle("LoadEntry a mano");
-                                adapter.addItem(f);
+                                adapter.addItem(new EntryItem(feed.getLink(), f));
                             }
                         }
 
@@ -209,13 +209,6 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-     private void setStatusBarColor(int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(color);
-        }
-    }
-
     private void toggleDrawer(boolean open) {
         if (open) drawerLayout.openDrawer(GravityCompat.START);
         else drawerLayout.closeDrawer(GravityCompat.START);
@@ -224,6 +217,7 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
     @Override
     public void onClick(View view, int position) {
         Log.d("LOG", "Clicked position " + position);
+        toggleDrawer(false);
         switch (position) {
             case POSITION_SETTINGS:
                 startActivity(new Intent(this, SettingsActivity.class));
@@ -234,9 +228,10 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
                 AnimationUtils.animateIn(this);
                 break;
             default:
+                adapter.removeAllByUrl(menuAdapter.getItem(position).getUrl());
+                break;
 
         }
-        //TODO detail activity
     }
 
     @Override
@@ -252,9 +247,9 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
             @Override
             public void onClick(View view, int position) {
                 Bundle arguments = new Bundle();
-                arguments.putString(EntryDetailFragment.ARG_URL, adapter.getItem(position).getLink());
-                arguments.putString(EntryDetailFragment.ARG_SNIPPET, adapter.getItem(position).getContentSnippet());
-                arguments.putString(EntryDetailFragment.ARG_TITLE, adapter.getItem(position).getTitle());
+                arguments.putString(EntryDetailFragment.ARG_URL, adapter.getItem(position).getEntry().getLink());
+                arguments.putString(EntryDetailFragment.ARG_SNIPPET, adapter.getItem(position).getEntry().getContentSnippet());
+                arguments.putString(EntryDetailFragment.ARG_TITLE, adapter.getItem(position).getEntry().getTitle());
                 if (mTwoPane) {
                     EntryDetailFragment fragment = new EntryDetailFragment();
                     fragment.setArguments(arguments);

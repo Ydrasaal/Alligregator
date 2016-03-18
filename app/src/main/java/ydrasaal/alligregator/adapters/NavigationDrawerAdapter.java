@@ -4,10 +4,8 @@ import android.support.v7.util.SortedList;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -157,6 +155,10 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         values.endBatchedUpdates();
     }
 
+    public MenuItem getItem(int position) {
+        return values.get(position);
+    }
+
     public class  MenuItemViewHolder extends RecyclerView.ViewHolder {
 
         public AppCompatButton button;
@@ -165,7 +167,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         public MenuItemViewHolder(View itemView, int viewType) {
             super(itemView);
 
-            button = (AppCompatButton) itemView.findViewById(R.id.title);
+            button = (AppCompatButton) itemView.findViewById(R.id.entry_title);
             this.viewType = viewType;
         }
     }

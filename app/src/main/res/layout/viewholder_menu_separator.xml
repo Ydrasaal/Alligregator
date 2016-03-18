@@ -7,7 +7,7 @@
     android:background="@color/colorAccent">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/entry_title"
         android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

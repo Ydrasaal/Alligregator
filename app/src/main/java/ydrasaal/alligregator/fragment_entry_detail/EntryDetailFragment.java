@@ -1,4 +1,4 @@
-package ydrasaal.alligregator;
+package ydrasaal.alligregator.fragment_entry_detail;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -12,15 +12,10 @@ import android.widget.TextView;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
+import ydrasaal.alligregator.R;
 import ydrasaal.alligregator.activities.EntryDetailActivity;
 import ydrasaal.alligregator.utils.ChromeUtils;
 
-/**
- * A fragment representing a single LoadEntry detail screen.
- * This fragment is either contained in a {@link FeedListActivity}
- * in two-pane mode (on tablets) or a {@link EntryDetailActivity}
- * on handsets.
- */
 public class EntryDetailFragment extends Fragment {
     /**
      * The fragment argument representing the item ID that this fragment
@@ -47,7 +42,6 @@ public class EntryDetailFragment extends Fragment {
 
         bundle = getArguments();
         if (bundle == null || !bundle.containsKey(ARG_URL)) {
-            Log.d("DetailFragment", "No bundle/url ...");
             return;
         }
 
@@ -66,9 +60,11 @@ public class EntryDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.feed_detail, container, false);
 
-        ((TextView) rootView.findViewById(R.id.feed_detail)).setText(bundle.getString(ARG_SNIPPET));
+        String snippet = bundle.getString(ARG_SNIPPET, "");
 
-
+        if (!snippet.isEmpty()) {
+            ((TextView) rootView.findViewById(R.id.feed_detail)).setText(bundle.getString(ARG_SNIPPET));
+        }
 
         rootView.findViewById(R.id.detail_button).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,9 @@ import ydrasaal.alligregator.data.FindEntry;
 import ydrasaal.alligregator.data.FindResults;
 import ydrasaal.alligregator.network.AlligregatorAPI;
 import ydrasaal.alligregator.network.listeners.APICallbackListener;
+import ydrasaal.alligregator.utils.AnimationUtils;
 import ydrasaal.alligregator.utils.SharedPrefUtils;
+import ydrasaal.alligregator.utils.ToastUtils;
 
 /**
  * Created by Léo on 13/03/2016.
@@ -63,6 +66,7 @@ public class SearchFeedActivity extends AToolbarCompatActivity {
     @Override
     protected void onHomeButtonClicked() {
         if (ongoingCall != null) AlligregatorAPI.getInstance().cancelCall(ongoingCall);
+        AnimationUtils.animateOut(this);
         finish();
     }
 
@@ -174,31 +178,10 @@ public class SearchFeedActivity extends AToolbarCompatActivity {
             holder.button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO LOGIC
                     SharedPrefUtils.saveURL(SearchFeedActivity.this, holder.mItem.getUrl());
-                    Log.d("LOG", "Added " + holder.mItem.getUrl());
+                    ToastUtils.displayToast(SearchFeedActivity.this, R.string.add_toast);
                 }
             });
-//            holder.mView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (mTwoPane) {
-//                        Bundle arguments = new Bundle();
-////                        arguments.putString(FeedContentFragment.ARG_FEED_URL, "osef");
-//                        FeedContentFragment fragment = new FeedContentFragment();
-//                        fragment.setArguments(arguments);
-//                        getSupportFragmentManager().beginTransaction()
-//                                .replace(R.id.feed_detail_container, fragment)
-//                                .commit();
-//                    } else {
-//                        Context context = v.getContext();
-//                        Intent intent = new Intent(context, FeedContentActivity.class);
-////                        intent.putExtra(FeedContentFragment.ARG_FEED_URL, "osef");
-//
-//                        context.startActivity(intent);
-//                    }
-//                }
-//            });
         }
 
         @Override
@@ -215,7 +198,7 @@ public class SearchFeedActivity extends AToolbarCompatActivity {
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                title = (TextView) view.findViewById(R.id.title);
+                title = (TextView) view.findViewById(R.id.entry_title);
                 button = (ImageButton) view.findViewById(R.id.button);
             }
         }

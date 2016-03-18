@@ -10,4 +10,6 @@
     <string name="about_title">About</string>
     <string name="about_version" translatable="false">Alligregator v%s</string>
     <string name="about_build" translatable="false">build %s</string>
+    <string name="feed_detail_placeholder">This entry did not provide a description D:</string>
+    <string name="add_toast">Feed added to favorites !</string>
 </resources>

@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:gravity="center_horizontal"
     >
 
     <TextView
@@ -12,17 +13,19 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textIsSelectable="true"
-        tools:context=".EntryDetailFragment"
-        android:layout_marginBottom="20dp"/>
+        tools:context=".fragment_entry_detail.EntryDetailFragment"
+        android:layout_marginBottom="20dp"
+        android:textColor="@android:color/white"
+        android:text="@string/feed_detail_placeholder"
+        />
 
     <Button
         android:id="@+id/detail_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:padding="15dp"
         android:text="Read full article"
         android:textColor="@android:color/white"
-        android:background="@color/colorPrimary"
-        android:layout_gravity="center_horizontal"/>
+        android:background="@color/colorPrimary"/>
 
 </LinearLayout>

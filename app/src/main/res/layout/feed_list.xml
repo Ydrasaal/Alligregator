@@ -8,4 +8,6 @@
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     tools:context="ydrasaal.alligregator.FeedListActivity"
-    tools:listitem="@layout/feed_list_content" />
+    tools:listitem="@layout/feed_list_content"
+    android:background="@android:color/black"
+    />
