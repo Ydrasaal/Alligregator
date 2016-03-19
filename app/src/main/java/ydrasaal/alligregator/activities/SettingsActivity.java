@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import ydrasaal.alligregator.R;
 import ydrasaal.alligregator.utils.AnimationUtils;
+import ydrasaal.alligregator.utils.ColorUtils;
 import ydrasaal.alligregator.utils.OptionsManager;
 
 /**
@@ -29,19 +30,10 @@ public class SettingsActivity extends AToolbarCompatActivity {
         setContentView(R.layout.activity_settings);
 
         retrieveSavedOptions();
-        Log.d("SETTINGS", "Saved settings :");
-        Log.d("SETTINGS", "Entry number = " + entryNumber);
 
         setupToolbar(R.drawable.ic_navigation_back, getString(R.string.settings_toolbar));
-        setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        ColorUtils.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorPrimaryDark));
         setupEntrySeekbar();
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setStatusBarColor(int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(color);
-        }
     }
 
     private void retrieveSavedOptions() {
@@ -79,15 +71,14 @@ public class SettingsActivity extends AToolbarCompatActivity {
         updateEntryDisplay();
     }
 
+    /**
+     * Update settings value before finishing the Activity
+     */
     @Override
     public void onBackPressed() {
         OptionsManager manager = OptionsManager.getInstance();
         manager.setLoadedEntryNumber(entryNumber);
         manager.saveOptionsToSharedPreferences(this);
-
-        Log.d("SETTINGS", "Saving settings :");
-        Log.d("SETTINGS", "Entry number = " + entryNumber);
-
 
         finish();
         AnimationUtils.animateOut(this);

@@ -31,7 +31,7 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
         try {
             super.onLayoutChildren(recycler, state);
         } catch (IndexOutOfBoundsException e) {
-            Log.e("RECYCLER", "met a IOOBE in RecyclerView");
+            Log.e("RecyclerLayoutManager", "met a IOOBE in RecyclerView");
         }
     }
 }

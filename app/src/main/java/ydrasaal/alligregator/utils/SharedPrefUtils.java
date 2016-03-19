@@ -10,6 +10,8 @@ import java.util.Set;
 
 /**
  * Created by Léo on 13/03/2016.
+ *
+ * Helper for SharedPreferences saving and fetching
  */
 public class SharedPrefUtils {
 
@@ -17,12 +19,11 @@ public class SharedPrefUtils {
     static final String SHARED_PREF_URLS = "spurls";
     static final String SHARED_PREF_SIZE_OPTION = "spsizeopt";
 
-
     /**
      * Add a new url to the favorites, creating the entry if it's the first
      *
-     * @param context
-     * @param str
+     * @param context Application context
+     * @param str url to save
      */
     public static void saveURL(Context context, String str) {
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE);
@@ -54,12 +55,6 @@ public class SharedPrefUtils {
         else newSet = new HashSet<>(savedSet);
 
         newSet.remove(url);
-
-        Log.d("SPREF", "removed : " + url);
-        for (String s :
-                newSet) {
-            Log.d("SPREF", s);
-        }
 
         SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet(SHARED_PREF_URLS, newSet);

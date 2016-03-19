@@ -26,17 +26,18 @@ import ydrasaal.alligregator.data.FindResults;
 import ydrasaal.alligregator.network.AlligregatorAPI;
 import ydrasaal.alligregator.network.listeners.APICallbackListener;
 import ydrasaal.alligregator.utils.AnimationUtils;
+import ydrasaal.alligregator.utils.ColorUtils;
 import ydrasaal.alligregator.utils.SharedPrefUtils;
 import ydrasaal.alligregator.utils.ToastUtils;
 
 /**
  * Created by Léo on 13/03/2016.
+ *
+ * Activity allowing the user to find feeds from keywords
  */
 public class SearchFeedActivity extends AToolbarCompatActivity {
 
     private Call ongoingCall;
-
-    private boolean mTwoPane;
 
     private List<FindEntry>          results;
     private SearchFeedAdapter   adapter;
@@ -47,15 +48,12 @@ public class SearchFeedActivity extends AToolbarCompatActivity {
         setContentView(R.layout.activity_search_feed);
 
         setupToolbar(R.drawable.ic_navigation_back, getString(R.string.title_search_feed));
-        setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
         results = new ArrayList<>();
-        if (findViewById(R.id.feed_detail_container) != null) {
-            mTwoPane = true;
-        }
 
         setupSearchView();
         setupResultsView();
+        ColorUtils.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorPrimaryDark));
     }
 
     @Override
@@ -63,6 +61,9 @@ public class SearchFeedActivity extends AToolbarCompatActivity {
         onHomeButtonClicked();
     }
 
+    /**
+     * Before finishing this activity, we make sure any ongoing Call is canceled so it doesn't return to a destroyed Activity
+     */
     @Override
     protected void onHomeButtonClicked() {
         if (ongoingCall != null) AlligregatorAPI.getInstance().cancelCall(ongoingCall);
@@ -70,13 +71,9 @@ public class SearchFeedActivity extends AToolbarCompatActivity {
         finish();
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setStatusBarColor(int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(color);
-        }
-    }
-
+    /**
+     * Add a callback to the SearchView, firing off API data retrieval for the entered keyword(s)
+     */
     private void setupSearchView() {
         SearchView view = (SearchView) findViewById(R.id.search_view);
         view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -100,45 +97,40 @@ public class SearchFeedActivity extends AToolbarCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Call API with the entered String (3 characters minimum), cancelling any ongoing call
+     *
+     * @param params user input
+     */
     private void searchFeeds(String params) {
         if (params.length() < 3) return;
         if (ongoingCall != null) AlligregatorAPI.getInstance().cancelCall(ongoingCall);
         ongoingCall = AlligregatorAPI.getInstance().searchFeed(params, createSearchCallback());
     }
 
+    /**
+     * create a listener for the Search service
+     *
+     * @return new listener instance
+     */
     private APICallbackListener<FindResults>   createSearchCallback() {
         return new APICallbackListener<FindResults>() {
             @Override
             public void onResponseSuccess(Response<FindResults> response) {
-                Log.d("LOG", "We got a response");
-                if (response.body() == null) {
-                    Log.d("LOG", "response null");
-                    return;
-                }
-                if (response.body().getResponseData() == null) {
-                    Log.d("LOG", "query null");
-                    return;
-                }
-                if (response.body().getResponseData().getEntries() == null) {
-                    Log.d("LOG", "entries null");
-                    return;
-                }
-                if (response.body().getResponseData().getEntries().isEmpty()) {
-                    Log.d("LOG", "entries empty");
-                } else {
-                    Log.d("LOG", "entries : " + response.body().getResponseData().getEntries().size());
+                try {
+                    if (response.body().getResponseData().getEntries().isEmpty()) return;
                     results.clear();
                     for (FindEntry entry :
                             response.body().getResponseData().getEntries()) {
                         if (entry != null) results.add(entry);
                         else {
                             FindEntry f = new FindEntry();
-                            f.setTitle("LoadEntry a mano");
                             results.add(f);
                         }
                     }
-
                     adapter.notifyDataSetChanged();
+                } catch (NullPointerException e) {
+                    Log.e(SearchFeedActivity.this.getLocalClassName(), e.getMessage());
                 }
             }
 
@@ -154,6 +146,9 @@ public class SearchFeedActivity extends AToolbarCompatActivity {
         };
     }
 
+    /**
+     * Simple adapter displaying the results as list
+     */
     public class SearchFeedAdapter
             extends RecyclerView.Adapter<SearchFeedAdapter.ViewHolder> {
 

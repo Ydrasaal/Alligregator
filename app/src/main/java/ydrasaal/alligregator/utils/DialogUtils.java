@@ -8,6 +8,8 @@ import ydrasaal.alligregator.R;
 
 /**
  * Created by Léo on 19/03/2016.
+ *
+ * Helper class creating and display AlertDialogs from Activity context
  */
 public class DialogUtils {
 

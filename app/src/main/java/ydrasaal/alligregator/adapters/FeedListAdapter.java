@@ -3,7 +3,6 @@ package ydrasaal.alligregator.adapters;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,8 @@ import ydrasaal.alligregator.listeners.OnRecyclerItemClickListener;
 
 /**
  * Created by lchazal on 18/03/16.
+ *
+ * Adapter for the main entry lists. Uses a SortedList ordering entries by creation date.
  */
 public class FeedListAdapter
         extends RecyclerView.Adapter<FeedListAdapter.ViewHolder> {
@@ -35,9 +36,7 @@ public class FeedListAdapter
 
         values = new SortedList<>(EntryItem.class, new SortedList.Callback<EntryItem>() {
             @Override
-            public int compare(EntryItem o1, EntryItem o2) {
-//                return o1.getEntry().getTitle().compareTo(o2.getEntry().getTitle());
-//                Log.d("Compare", "Comparing " + o1.getEntry().getPublishedDate().toString() + " to " + o2.getEntry().getPublishedDate().toString());
+            public int compare(EntryItem o2, EntryItem o1) {
                 return o1.getEntry().getPublishedDate().compareTo(o2.getEntry().getPublishedDate());
             }
 
@@ -105,13 +104,7 @@ public class FeedListAdapter
 
     public void addItem(EntryItem item) {
         values.add(item);
-        Log.d("Date", "Added item with date " + item.getEntry().getPublishedDate().toString());
         notifyItemInserted(values.size() - 1);
-    }
-
-    public void removeItem(int position) {
-        values.removeItemAt(position);
-        notifyItemRemoved(position);
     }
 
     public EntryItem getItem(int position) {

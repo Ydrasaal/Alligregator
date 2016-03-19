@@ -14,6 +14,8 @@ import ydrasaal.alligregator.utils.SharedPrefUtils;
 
 /**
  * Created by Léo on 12/03/2016.
+ *
+ * Simple Splashscreen
  */
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -25,23 +27,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        Set<String> set = SharedPrefUtils.getURLs(this);
-        if (set == null) {
-            Log.d("SHARED_PREF", "Null preferences ...");
-        } else if (set.isEmpty()){
-            Log.d("SHARED_PREF", "Empty preferences ...");
-        } else {
-            Log.d("SHARED_PREF", "Got " + set.size() + " saved url(s)");
-            int i = 1;
-            for (String s :
-                    set) {
-                Log.d("SHARED_PREF", i++ + ": " + s);
-            }
-        }
-
         setSplashScreenCountDown();
     }
 
+    /**
+     * Create and starts countdown before the app starts
+     *
+     * (This Handler doesn't use an external Service, invalidating the HandlerLeak Lint warning)
+     */
     private void setSplashScreenCountDown() {
         Handler _splashHandler = new Handler() {
             @Override

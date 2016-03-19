@@ -7,7 +7,7 @@ import ydrasaal.alligregator.R;
 /**
  * Created by lchazal on 17/03/16.
  *
- * Animation method for activities
+ * Animation helper for activities transitions
  */
 public class AnimationUtils {
 

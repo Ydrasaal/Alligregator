@@ -3,12 +3,9 @@ package ydrasaal.alligregator.adapters;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.List;
 
 import ydrasaal.alligregator.R;
 import ydrasaal.alligregator.data.MenuItem;
@@ -17,7 +14,7 @@ import ydrasaal.alligregator.listeners.OnRecyclerItemClickListener;
 /**
  * Created by Léo on 12/03/2016.
  *
- * Adapter for the navigationDrawer's Recyclerview.
+ * Adapter for the navigationDrawer's Recyclerview. Sort elements with a provided index by this index, else by feed title.
  */
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.MenuItemViewHolder> {
 
@@ -76,15 +73,9 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         switch (viewType) {
             case TYPE_HEADER:
                 layoutId = R.layout.nav_header_home;
-                Log.d("TEST", "nav_header_home");
                 break;
             case TYPE_SECTION:
-                Log.d("TEST", "nav_content_home");
                 layoutId = R.layout.nav_content_home;
-                break;
-            default:
-                Log.d("TEST", "nav_button_home");
-
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
 
@@ -140,26 +131,9 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         notifyItemInserted(values.size() - 1);
     }
 
-    public void addAll(List<MenuItem> items) {
-        values.beginBatchedUpdates();
-        for (MenuItem item :
-                items) {
-            values.add(item);
-        }
-        values.endBatchedUpdates();
-    }
-
     public void removeItem(int position) {
         values.removeItemAt(position);
         notifyItemRemoved(position);
-    }
-
-    public void removeAll() {
-        values.beginBatchedUpdates();
-        while (values.size() > 0) {
-            values.removeItemAt(values.size() - 1);
-        }
-        values.endBatchedUpdates();
     }
 
     public MenuItem getItem(int position) {

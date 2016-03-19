@@ -7,6 +7,8 @@ import android.os.Build;
 
 /**
  * Created by Léo on 12/03/2016.
+ *
+ * Helper class for Compat layouts status bar coloring
  */
 public class ColorUtils {
 

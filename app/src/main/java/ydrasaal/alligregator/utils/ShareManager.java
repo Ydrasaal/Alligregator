@@ -3,7 +3,7 @@ package ydrasaal.alligregator.utils;
 import android.content.Intent;
 import android.os.Bundle;
 
-import ydrasaal.alligregator.fragment_entry_detail.EntryDetailFragment;
+import ydrasaal.alligregator.fragments.EntryDetailFragment;
 
 /**
  * Created by Léo on 16/03/2016.

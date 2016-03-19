@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import ydrasaal.alligregator.R;
 import ydrasaal.alligregator.utils.AnimationUtils;
+import ydrasaal.alligregator.utils.ColorUtils;
 
 /**
  * Created by lchazal on 18/03/16.
@@ -30,7 +31,7 @@ public class AboutActivity extends AToolbarCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        ColorUtils.setStatusBarColor(this,ContextCompat.getColor(this, R.color.colorPrimaryDark));
     }
 
     @Override
@@ -42,12 +43,5 @@ public class AboutActivity extends AToolbarCompatActivity {
     public void onBackPressed() {
         finish();
         AnimationUtils.animateOut(this);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setStatusBarColor(int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(color);
-        }
     }
 }

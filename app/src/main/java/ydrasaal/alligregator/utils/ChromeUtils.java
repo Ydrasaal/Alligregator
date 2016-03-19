@@ -12,11 +12,17 @@ import ydrasaal.alligregator.network.chrome.CustomTabActivityHelper;
 
 /**
  * Created by lchazal on 18/03/16.
+ *
+ * Creates and starts a custom Chrome Tab Activity from the current Activity's context
  */
 public class ChromeUtils {
 
-    private static final String EXTRA_CUSTOM_TABS_SESSION = "android.support.customtabs.extra.SESSION";
-
+    /**
+     * Open an Uri into Chrome's custom tab service
+     *
+     * @param activity current Activity context
+     * @param uri Uri containing the target page to load
+     */
     public static void openUrlInCustomTab(Activity activity, Uri uri) {
         CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
         intentBuilder.setToolbarColor(ContextCompat.getColor(activity, R.color.colorPrimary));

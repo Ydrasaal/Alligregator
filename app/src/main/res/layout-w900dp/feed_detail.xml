@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textIsSelectable="true"
-        tools:context=".fragment_entry_detail.EntryDetailFragment"
+        tools:context=".fragments.EntryDetailFragment"
         android:layout_marginBottom="20dp"
         android:textColor="@android:color/white"
         android:text="@string/feed_detail_placeholder"

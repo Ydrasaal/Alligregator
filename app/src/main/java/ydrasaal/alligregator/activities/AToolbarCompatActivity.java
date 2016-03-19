@@ -22,10 +22,6 @@ public abstract class AToolbarCompatActivity extends AppCompatActivity {
     private TextView    toolbarTitle;
 
     protected void      setupToolbar(int homeIconId, String title) {
-        setupToolbar(homeIconId, title, 0);
-    }
-
-    protected void      setupToolbar(int homeIconId, String title, int elevation) {
         setToolbarIcon(homeIconId);
         setToolbarTitle(title);
     }

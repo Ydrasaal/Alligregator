@@ -17,7 +17,7 @@ import android.view.View;
 import java.util.Set;
 
 import retrofit.Response;
-import ydrasaal.alligregator.fragment_entry_detail.EntryDetailFragment;
+import ydrasaal.alligregator.fragments.EntryDetailFragment;
 import ydrasaal.alligregator.R;
 import ydrasaal.alligregator.adapters.FeedListAdapter;
 import ydrasaal.alligregator.adapters.NavigationDrawerAdapter;
@@ -37,6 +37,8 @@ import ydrasaal.alligregator.views.RecyclerLayoutManager;
 
 /**
  * Created by Léo on 13/03/2016.
+ *
+ * Main screen, displaying entries of feeds registered as favorites
  */
 public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerItemClickListener {
 
@@ -48,9 +50,7 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
 
     private RecyclerView drawerRecyclerView;
     private DrawerLayout drawerLayout;
-
     private FeedListAdapter adapter;
-
     private NavigationDrawerAdapter menuAdapter;
 
     @Override
@@ -58,7 +58,7 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
-        setupToolbar(R.drawable.icon_navigation, "Alligregator");
+        setupToolbar(R.drawable.icon_navigation, getString(R.string.app_name));
         setupDrawerLayout();
         setupDrawerToggle();
         setupFloatingActionButton();
@@ -74,63 +74,56 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
     protected void onStart() {
         super.onStart();
 
-        Set<String> set = SharedPrefUtils.getURLs(this);
-        if (set != null && !set.isEmpty()) {
-            Log.d("LOG", "We got favorites !");
-            for (final String url :
-                    set) {
-            AlligregatorAPI.getInstance().loadFeed(url, new APICallbackListener<LoadResults>() {
-                @Override
-                public void onResponseSuccess(Response<LoadResults> response) {
-                    Log.d("LOG", "We got a response");
-                    if (response.body() == null) {
-                        Log.d("LOG", "response null");
-                        return;
-                    }
-                    if (response.body().getResponseData() == null) {
-                        Log.d("LOG", "query null");
-                        return;
-                    }
-                    if (response.body().getResponseData().getFeed() == null) {
-                        Log.d("LOG", "feed null");
-                        return;
-                    }
-                    Feed feed = response.body().getResponseData().getFeed();
+        retrieveAPIData();
+    }
 
+    /**
+     * Make an API call for each url in favorites
+     */
+    private void retrieveAPIData() {
+        Set<String> set = SharedPrefUtils.getURLs(this);
+        if (set == null || set.isEmpty()) return;
+        for (String url :
+                set) {
+            AlligregatorAPI.getInstance().loadFeed(url, createFeedAPICallback(url));
+        }
+    }
+
+    private APICallbackListener<LoadResults> createFeedAPICallback(final String url) {
+        return new APICallbackListener<LoadResults>() {
+            @Override
+            public void onResponseSuccess(Response<LoadResults> response) {
+                if (response.body() == null || response.body().getResponseData() == null) return;
+                try {
+                    Feed feed = response.body().getResponseData().getFeed();
                     menuAdapter.addItem(new MenuItem(feed.getTitle(), false, feed.getLink(), url));
-                    if (feed.getEntries().isEmpty()) {
-                        Log.d("LOG", "entries empty");
-                    } else {
-                        Log.d("LOG", "entries : " + feed.getEntries().size());
-//                        results.clear();
+                    if (!feed.getEntries().isEmpty()) {
                         for (LoadEntry entry :
                                 feed.getEntries()) {
-                            if (entry != null) adapter.addItem(new EntryItem(feed.getLink(), entry));
+                            if (entry != null)
+                                adapter.addItem(new EntryItem(feed.getLink(), entry));
                             else {
                                 LoadEntry f = new LoadEntry();
-                                f.setTitle("LoadEntry a mano");
                                 adapter.addItem(new EntryItem(feed.getLink(), f));
                             }
                         }
-
                         adapter.notifyDataSetChanged();
                     }
+                } catch (NullPointerException e) {
+                    Log.e(LobbyActivity.this.getLocalClassName(), e.getMessage());
                 }
+            }
 
-                @Override
-                public void onResponseFailure() {
-
-                }
-
-                @Override
-                public void onFailure() {
-
-                }
-            });
+            @Override
+            public void onResponseFailure() {
 
             }
 
-        }
+            @Override
+            public void onFailure() {
+
+            }
+        };
     }
 
     @Override
@@ -150,7 +143,6 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
 
     private void setupDrawerToggle() {
         drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
@@ -195,6 +187,10 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * change the status bar's color depending on the drawer state
+     * @param progress drawer progress
+     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setProgressiveStatusBarColor(float progress) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -208,9 +204,14 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
         else drawerLayout.closeDrawer(GravityCompat.START);
     }
 
+    /**
+     * Hide entries except those from the selected feed
+     *
+     * @param view clicked view
+     * @param position view position
+     */
     @Override
     public void onClick(View view, int position) {
-        Log.d("LOG", "Clicked position " + position);
         toggleDrawer(false);
         switch (position) {
             case POSITION_SETTINGS:
@@ -227,10 +228,15 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
         }
     }
 
+    /**
+     * Display the delete dialog for selected feed
+     *
+     * @param view clicked view
+     * @param position view position
+     */
     @Override
     public void onLongCLick(View view, final int position) {
-        Log.d("LOG", "Long Clicked position " + position);
-        if (position < POSITION_FAVS) return;
+        if (position < POSITION_FAVS) return; //Only applies to favorites
 
         DialogUtils.displayAlertDialog(this, new DialogInterface.OnClickListener() {
             @Override
@@ -243,6 +249,12 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
         });
     }
 
+    /**
+     * Create a listener for the entry list's content
+     * Display the detail view on click
+     *
+     * @return new listener instance
+     */
     private OnRecyclerItemClickListener createRecyclerListener() {
         return new OnRecyclerItemClickListener() {
             @Override

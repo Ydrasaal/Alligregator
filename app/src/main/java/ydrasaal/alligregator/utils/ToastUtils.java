@@ -7,6 +7,8 @@ import ydrasaal.alligregator.R;
 
 /**
  * Created by lchazal on 18/03/16.
+ *
+ * Simple Toast factory
  */
 public class ToastUtils {
 

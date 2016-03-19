@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
-import ydrasaal.alligregator.fragment_entry_detail.EntryDetailFragment;
+import ydrasaal.alligregator.fragments.EntryDetailFragment;
 import ydrasaal.alligregator.R;
 import ydrasaal.alligregator.utils.ShareManager;
 

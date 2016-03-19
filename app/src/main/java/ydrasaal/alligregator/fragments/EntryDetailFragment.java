@@ -1,11 +1,10 @@
-package ydrasaal.alligregator.fragment_entry_detail;
+package ydrasaal.alligregator.fragments;
 
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +13,14 @@ import android.widget.TextView;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import ydrasaal.alligregator.R;
-import ydrasaal.alligregator.activities.EntryDetailActivity;
 import ydrasaal.alligregator.utils.ChromeUtils;
 import ydrasaal.alligregator.utils.ShareManager;
 
+/**
+ * EntryDetailActivity's nested content, display fullscreen on smartphones and in a side view on tablets.
+ */
 public class EntryDetailFragment extends Fragment {
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
+
     public static final String ARG_SNIPPET = "argsnip";
     public static final String ARG_URL = "argurl";
     public static final String ARG_TITLE = "argtitle";
@@ -31,10 +29,6 @@ public class EntryDetailFragment extends Fragment {
 
     Bundle bundle;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public EntryDetailFragment() {
     }
 
@@ -79,6 +73,11 @@ public class EntryDetailFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Bind the FloatingActionButton to start sharing intents
+     *
+     * @param rootView button's view
+     */
     private void setupFAButton(View rootView) {
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         if (fab == null) return;

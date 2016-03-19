@@ -9,11 +9,14 @@ import ydrasaal.alligregator.network.listeners.APICallbackListener;
 
 /**
  * Created by Léo on 12/03/2016.
+ *
+ * API calls definition
  */
 public interface IAlligregatorAPI {
 
     String BASE_URL_FIND = "https://ajax.googleapis.com/ajax/services/feed/find";
     String BASE_URL_LOAD = "https://ajax.googleapis.com/ajax/services/feed/load";
+    String TIMESTAMP_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
 
     boolean isNetworkAvailable(Context context);
     void    cancelCall(Call call);
