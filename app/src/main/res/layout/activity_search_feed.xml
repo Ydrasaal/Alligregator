@@ -14,14 +14,16 @@
 
     </SearchView>
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/feed_list"
+        android:name="ydrasaal.alligregator.FeedListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <include layout="@layout/feed_list" />
-    </FrameLayout>
+        app:layoutManager="LinearLayoutManager"
+        android:background="@android:color/black"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
     
 </LinearLayout>
 

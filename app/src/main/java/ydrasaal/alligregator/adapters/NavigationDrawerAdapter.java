@@ -3,6 +3,7 @@ package ydrasaal.alligregator.adapters;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,9 +76,15 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         switch (viewType) {
             case TYPE_HEADER:
                 layoutId = R.layout.nav_header_home;
+                Log.d("TEST", "nav_header_home");
                 break;
             case TYPE_SECTION:
+                Log.d("TEST", "nav_content_home");
                 layoutId = R.layout.nav_content_home;
+                break;
+            default:
+                Log.d("TEST", "nav_button_home");
+
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
 

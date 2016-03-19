@@ -48,7 +48,7 @@ public class EntryDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String preview = ShareManager.createEntryPreviewString(arguments);
                 if (!preview.isEmpty()) {
-                    startActivity(ShareManager.createShareIntent("Check dis out m8 :\n\n" + preview));
+                    startActivity(ShareManager.createShareIntent(getString(R.string.share_message) + preview));
                 }
             }
         });

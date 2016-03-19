@@ -3,6 +3,7 @@ package ydrasaal.alligregator.adapters;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,9 @@ public class FeedListAdapter
         values = new SortedList<>(EntryItem.class, new SortedList.Callback<EntryItem>() {
             @Override
             public int compare(EntryItem o1, EntryItem o2) {
-                return o1.getEntry().getTitle().compareTo(o2.getEntry().getTitle());
+//                return o1.getEntry().getTitle().compareTo(o2.getEntry().getTitle());
+//                Log.d("Compare", "Comparing " + o1.getEntry().getPublishedDate().toString() + " to " + o2.getEntry().getPublishedDate().toString());
+                return o1.getEntry().getPublishedDate().compareTo(o2.getEntry().getPublishedDate());
             }
 
             @Override
@@ -102,6 +105,7 @@ public class FeedListAdapter
 
     public void addItem(EntryItem item) {
         values.add(item);
+        Log.d("Date", "Added item with date " + item.getEntry().getPublishedDate().toString());
         notifyItemInserted(values.size() - 1);
     }
 
@@ -114,7 +118,7 @@ public class FeedListAdapter
         return values.get(position);
     }
 
-    public void removeAllByUrl(String url) {
+    public void filterByUrl(String url) {
         restoreHiddenEntries();
         if (url.equals(currentDisplay)) {
             currentDisplay = "";
@@ -128,6 +132,18 @@ public class FeedListAdapter
         }
         values.endBatchedUpdates();
         currentDisplay = url;
+        notifyDataSetChanged();
+    }
+
+    public void removeByUrl(String url) {
+        restoreHiddenEntries();
+        values.beginBatchedUpdates();
+        for (int i = values.size() - 1; i >= 0; i--) {
+            if (values.get(i).getFeedName().equals(url)) {
+                values.removeItemAt(i);
+            }
+        }
+        values.endBatchedUpdates();
         notifyDataSetChanged();
     }
 

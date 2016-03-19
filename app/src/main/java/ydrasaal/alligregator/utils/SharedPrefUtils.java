@@ -25,7 +25,6 @@ public class SharedPrefUtils {
      * @param str
      */
     public static void saveURL(Context context, String str) {
-        Log.d("SHARED_PREF", "Saving url " + str);
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE);
 
         Set<String> savedSet = prefs.getStringSet(SHARED_PREF_URLS, null);
@@ -36,11 +35,6 @@ public class SharedPrefUtils {
         newSet.add(str);
 
         SharedPreferences.Editor editor = prefs.edit();
-        Log.d("SHARED_PREF", "Saving url set of size " + newSet.size());
-        for (String s :
-                newSet) {
-            Log.d("SHARED_PREF", s);
-        }
         editor.putStringSet(SHARED_PREF_URLS, newSet);
         editor.apply();
     }
@@ -49,6 +43,27 @@ public class SharedPrefUtils {
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE);
 
         return prefs.getStringSet(SHARED_PREF_URLS, null);
+    }
+
+    public static void deleteURL(Context context, String url) {
+        SharedPreferences prefs = context.getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE);
+
+        Set<String> savedSet = prefs.getStringSet(SHARED_PREF_URLS, null);
+        Set<String> newSet;
+        if (savedSet == null) newSet = new HashSet<>();
+        else newSet = new HashSet<>(savedSet);
+
+        newSet.remove(url);
+
+        Log.d("SPREF", "removed : " + url);
+        for (String s :
+                newSet) {
+            Log.d("SPREF", s);
+        }
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putStringSet(SHARED_PREF_URLS, newSet);
+        editor.apply();
     }
 
     public static void saveOptions(Context context, int sizeValue) {

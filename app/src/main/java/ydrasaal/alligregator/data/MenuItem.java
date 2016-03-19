@@ -12,16 +12,18 @@ public class MenuItem {
     private String  url;
     private int     iconId = 0;
     private boolean isHeader;
+    private String savedURL;
 
-    public MenuItem(String title, boolean isHeader, String url) {
-        this(title, 0, isHeader, url);
+    public MenuItem(String title, boolean isHeader, String url, String savedUrl) {
+        this(title, 0, isHeader, url, savedUrl);
     }
 
-    public MenuItem(String title, int iconId, boolean isHeader, String url) {
+    public MenuItem(String title, int iconId, boolean isHeader, String url, String savedUrl) {
         this.title = title;
         this.iconId = iconId;
         this.isHeader = isHeader;
         this.url = url;
+        this.savedURL = savedUrl;
     }
 
     public String getTitle() {
@@ -46,5 +48,13 @@ public class MenuItem {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    public String getSavedURL() {
+        return savedURL;
+    }
+
+    public void setSavedURL(String savedURL) {
+        this.savedURL = savedURL;
     }
 }

@@ -40,8 +40,8 @@ public class AboutActivity extends AToolbarCompatActivity {
 
     @Override
     public void onBackPressed() {
-        AnimationUtils.animateOut(this);
         finish();
+        AnimationUtils.animateOut(this);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

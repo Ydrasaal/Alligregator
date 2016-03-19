@@ -9,6 +9,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import ydrasaal.alligregator.R;
+import ydrasaal.alligregator.utils.AnimationUtils;
 import ydrasaal.alligregator.utils.OptionsManager;
 
 /**
@@ -89,6 +90,7 @@ public class SettingsActivity extends AToolbarCompatActivity {
 
 
         finish();
+        AnimationUtils.animateOut(this);
     }
 
     @Override

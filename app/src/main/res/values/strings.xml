@@ -12,4 +12,11 @@
     <string name="about_build" translatable="false">build %s</string>
     <string name="feed_detail_placeholder">This entry did not provide a description D:</string>
     <string name="add_toast">Feed added to favorites !</string>
+
+    <string name="share_message">Look what I found using Alligregator !\n\n</string>
+
+    <string name="dialog_title">Delete feed</string>
+    <string name="dialog_message">Do you want to remove this feed from your favorites ?</string>
+    <string name="dialog_ok">Yes</string>
+    <string name="dialog_ko">No</string>
 </resources>

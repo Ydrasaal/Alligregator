@@ -1,6 +1,7 @@
 package ydrasaal.alligregator.activities;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import ydrasaal.alligregator.data.MenuItem;
 import ydrasaal.alligregator.listeners.OnRecyclerItemClickListener;
 import ydrasaal.alligregator.network.AlligregatorAPI;
 import ydrasaal.alligregator.network.listeners.APICallbackListener;
+import ydrasaal.alligregator.utils.DialogUtils;
 import ydrasaal.alligregator.utils.AnimationUtils;
 import ydrasaal.alligregator.utils.ColorUtils;
 import ydrasaal.alligregator.utils.SharedPrefUtils;
@@ -38,9 +40,9 @@ import ydrasaal.alligregator.views.RecyclerLayoutManager;
  */
 public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerItemClickListener {
 
-    private final int   POSITION_SETTINGS = 2;
-    private final int   POSITION_ABOUT = 3;
-    private final int   POSITION_FAVS = 5;
+    private static final int   POSITION_SETTINGS = 2;
+    private static final int   POSITION_ABOUT = 3;
+    private static final int   POSITION_FAVS = 5;
 
     private boolean mTwoPane;
 
@@ -61,7 +63,6 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
         setupDrawerToggle();
         setupFloatingActionButton();
         setupRecyclerDrawer();
-//        results = new ArrayList<>();
         if (findViewById(R.id.feed_detail_container) != null) {
             mTwoPane = true;
         }
@@ -76,14 +77,7 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
         Set<String> set = SharedPrefUtils.getURLs(this);
         if (set != null && !set.isEmpty()) {
             Log.d("LOG", "We got favorites !");
-
-
-
-
-//            Iterator<String> i = set.iterator();
-//
-//            String url = i.next();
-            for (String url :
+            for (final String url :
                     set) {
             AlligregatorAPI.getInstance().loadFeed(url, new APICallbackListener<LoadResults>() {
                 @Override
@@ -103,7 +97,7 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
                     }
                     Feed feed = response.body().getResponseData().getFeed();
 
-                    menuAdapter.addItem(new MenuItem(feed.getTitle(), false, feed.getLink()));
+                    menuAdapter.addItem(new MenuItem(feed.getTitle(), false, feed.getLink(), url));
                     if (feed.getEntries().isEmpty()) {
                         Log.d("LOG", "entries empty");
                     } else {
@@ -186,11 +180,11 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
         drawerRecyclerView.setLayoutManager(mLinearLayoutmanager);
 
         menuAdapter = new NavigationDrawerAdapter(this);
-        menuAdapter.addFixedItem(new MenuItem("", false, ""), 0);
-        menuAdapter.addFixedItem(new MenuItem("More", true, ""), 1);
-        menuAdapter.addFixedItem(new MenuItem("Settings", R.drawable.ic_share_white_24dp, false, ""), 2);
-        menuAdapter.addFixedItem(new MenuItem("About", R.drawable.ic_share_white_24dp, false, ""), 3);
-        menuAdapter.addFixedItem(new MenuItem("Favorites", true, ""), 4);
+        menuAdapter.addFixedItem(new MenuItem("", false, "", ""), 0);
+        menuAdapter.addFixedItem(new MenuItem("More", true, "", ""), 1);
+        menuAdapter.addFixedItem(new MenuItem("Settings", R.drawable.ic_settings_white_24dp, false, "", ""), 2);
+        menuAdapter.addFixedItem(new MenuItem("About", R.drawable.ic_info_outline_white_24dp, false, "", ""), 3);
+        menuAdapter.addFixedItem(new MenuItem("Favorites", true, "", ""), 4);
 
         drawerRecyclerView.setAdapter(menuAdapter);
     }
@@ -228,18 +222,25 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
                 AnimationUtils.animateIn(this);
                 break;
             default:
-                adapter.removeAllByUrl(menuAdapter.getItem(position).getUrl());
+                adapter.filterByUrl(menuAdapter.getItem(position).getUrl());
                 break;
-
         }
     }
 
     @Override
-    public void onLongCLick(View view, int position) {
+    public void onLongCLick(View view, final int position) {
         Log.d("LOG", "Long Clicked position " + position);
-        if (position <= POSITION_FAVS) return;
+        if (position < POSITION_FAVS) return;
 
-        //TODO delete activity
+        DialogUtils.displayAlertDialog(this, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                SharedPrefUtils.deleteURL(LobbyActivity.this, menuAdapter.getItem(position).getSavedURL());
+                adapter.removeByUrl(menuAdapter.getItem(position).getUrl());
+                menuAdapter.removeItem(position);
+            }
+        });
     }
 
     private OnRecyclerItemClickListener createRecyclerListener() {
@@ -260,8 +261,6 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
                     Intent intent = new Intent(LobbyActivity.this, EntryDetailActivity.class);
                     intent.putExtras(arguments);
                     startActivity(intent);
-//                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(holder.mItem.getLink()));
-//                        startActivity(browserIntent);
                 }
             }
 
@@ -271,67 +270,4 @@ public class LobbyActivity extends AToolbarCompatActivity implements OnRecyclerI
             }
         };
     }
-
-//    public class FeedListAdapter
-//            extends RecyclerView.Adapter<FeedListAdapter.ViewHolder> {
-//
-//        private final List<LoadEntry> mValues;
-//
-//        public FeedListAdapter(List<LoadEntry> items) {
-//            mValues = items;
-//        }
-//
-//        @Override
-//        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            View view = LayoutInflater.from(parent.getContext())
-//                    .inflate(R.layout.viewholder_entry, parent, false);
-//            return new ViewHolder(view);
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(final ViewHolder holder, int position) {
-//            holder.mItem = mValues.get(position);
-//            holder.title.setText(Html.fromHtml(mValues.get(position).getTitle()));
-//
-//            holder.mView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Bundle arguments = new Bundle();
-//                    arguments.putString(EntryDetailFragment.ARG_URL, holder.mItem.getLink());
-//                    arguments.putString(EntryDetailFragment.ARG_SNIPPET, holder.mItem.getContentSnippet());
-//                    arguments.putString(EntryDetailFragment.ARG_TITLE, holder.mItem.getTitle());
-//                    if (mTwoPane) {
-//                        EntryDetailFragment fragment = new EntryDetailFragment();
-//                        fragment.setArguments(arguments);
-//                        getSupportFragmentManager().beginTransaction()
-//                                .replace(R.id.feed_detail_container, fragment)
-//                                .commit();
-//                    } else {
-//                        Intent intent = new Intent(LobbyActivity.this, EntryDetailActivity.class);
-//                        intent.putExtras(arguments);
-//                        startActivity(intent);
-////                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(holder.mItem.getLink()));
-////                        startActivity(browserIntent);
-//                    }
-//                }
-//            });
-//        }
-//
-//        @Override
-//        public int getItemCount() {
-//            return mValues.size();
-//        }
-//
-//        public class ViewHolder extends RecyclerView.ViewHolder {
-//            public final View mView;
-//            public final TextView title;
-//            public LoadEntry mItem;
-//
-//            public ViewHolder(View view) {
-//                super(view);
-//                mView = view;
-//                title = (TextView) view.findViewById(R.id.title);
-//            }
-//        }
-//    }
 }

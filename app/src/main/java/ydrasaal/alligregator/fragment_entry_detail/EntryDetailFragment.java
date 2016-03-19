@@ -3,6 +3,7 @@ package ydrasaal.alligregator.fragment_entry_detail;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 import ydrasaal.alligregator.R;
 import ydrasaal.alligregator.activities.EntryDetailActivity;
 import ydrasaal.alligregator.utils.ChromeUtils;
+import ydrasaal.alligregator.utils.ShareManager;
 
 public class EntryDetailFragment extends Fragment {
     /**
@@ -72,7 +74,22 @@ public class EntryDetailFragment extends Fragment {
                 ChromeUtils.openUrlInCustomTab(getActivity(), Uri.parse(contentURL));
             }
         });
+        setupFAButton(rootView);
 
         return rootView;
+    }
+
+    private void setupFAButton(View rootView) {
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        if (fab == null) return;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String preview = ShareManager.createEntryPreviewString(bundle);
+                if (!preview.isEmpty()) {
+                    startActivity(ShareManager.createShareIntent(getString(R.string.share_message) + preview));
+                }
+            }
+        });
     }
 }
