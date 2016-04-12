@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data android:name="buildCount" android:value="173" />
+        <meta-data android:name="buildCount" android:value="178" />
 
         <activity
             android:name=".activities.SplashScreenActivity"
