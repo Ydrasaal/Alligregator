@@ -5,12 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-
-import java.util.Set;
 
 import ydrasaal.alligregator.R;
-import ydrasaal.alligregator.utils.SharedPrefUtils;
 
 /**
  * Created by Léo on 12/03/2016.
@@ -28,6 +24,50 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         setSplashScreenCountDown();
+
+//        User user = new User();
+//        user.setUsername("undeuxtrois");
+//        user.setPassword("123456");
+//        user.setMail("kjdgh@jhdfg.fr");
+//
+////        AlligregatorRetrofitAPI.pass = user.getPassword();
+////        AlligregatorRetrofitAPI.username = user.getUsername();
+//
+//        AlligregatorAPI.getInstance().subscribeToRSS(new APICallbackListener<Void>() {
+//            @Override
+//            public void onResponseSuccess(Response<Void> response) {
+//                AlligregatorAPI.getInstance().getSubscriptions(new APICallbackListener<Void>() {
+//                    @Override
+//                    public void onResponseSuccess(Response<Void> response) {
+//                        Log.d("JHDGF", "SUCCESS " + response.message());
+//                    }
+//
+//                    @Override
+//                    public void onResponseFailure() {
+//                        Log.d("JHDGF", "response failure");
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure() {
+//                        Log.d("JHDGF", "call failure");
+//
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onResponseFailure() {
+//
+//            }
+//
+//            @Override
+//            public void onFailure() {
+//
+//            }
+//        }, "http://shemalensfw.tumblr.com/rss");
+
+
     }
 
     /**
@@ -55,7 +95,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void switchToLobby() {
-        startActivity(new Intent(this, LobbyActivity.class));
+        startActivity(new Intent(this, FrontActivity.class));
+//        startActivity(new Intent(this, LobbyActivity.class));
         finish();
     }
 }
